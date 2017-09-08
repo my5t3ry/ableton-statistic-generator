@@ -5,7 +5,7 @@ Add topics
 
 ## build:
 ```
-mvn clean pacakge
+mvn clean compile assembly:single 
 ```
 ##usage:
 ```
