@@ -1,0 +1,78 @@
+package de.my5t3ry;
+
+import de.my5t3ry.als_parser.AbletonFileParser;
+import de.my5t3ry.als_parser.domain.AbletonProject.AbletonProject;
+import de.my5t3ry.als_parser.domain.AbletonProject.device.Device;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Hello world!
+ */
+public class App {
+
+    private static final AbletonFileParser fileParser = new AbletonFileParser();
+
+    public static void main(String[] args) {
+        if (args.length < 1 || args.length > 1) {
+            printUsage();
+        } else {
+            buildStats(new File(args[0]));
+        }
+
+    }
+
+    private static void buildStats(final File file) {
+        if (file.isDirectory()) {
+            printDirectoryStats(file);
+        } else {
+            printFileStats(file);
+        }
+    }
+
+    private static void printFileStats(final File file) {
+    }
+
+    private static void printDirectoryStats(final File file) {
+        System.out.println("parsing files, this can take a while ... \n");
+        final List<AbletonProject> abletonProjects = fileParser.parseDirectory(file);
+        System.out.println("found files:'" + abletonProjects.size() + "'");
+        printAverageTrackCount(abletonProjects);
+        printDeviceStats(abletonProjects.stream()
+                .flatMap(curProject -> curProject.getInternalDevices().stream())
+                .collect(Collectors.toList()), "External Effects");
+        printDeviceStats(abletonProjects.stream()
+                .flatMap(curProject -> curProject.getExternalDevices().stream())
+                .collect(Collectors.toList()),"External Effects");
+    }
+
+    private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
+        int totalTrackCount;
+        totalTrackCount = abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalTracks()));
+        System.out.println("Average tracks per project:'" + new BigDecimal(totalTrackCount).divide(new BigDecimal(abletonProjects.size()),4, RoundingMode.HALF_DOWN) + "'");
+    }
+
+    private static void printDeviceStats(final List<Device> devices, final String caption) {
+        System.out.println(caption + ":");
+        final HashMap<Device, Integer> result = new HashMap<>();
+        devices.forEach(device -> {
+            if (result.containsKey(device)) {
+                result.put(device, result.get(device) + device.getCount());
+            } else {
+                result.put(device, device.getCount());
+            }
+        });
+        result.entrySet().forEach(curEntry -> {
+            System.out.println(curEntry.getKey().getName() + ": " + curEntry.getValue());
+        });
+    }
+
+    private static void printUsage() {
+        System.out.println("invalid argument count. \n Usage:\n java -jar als-stats.jar '/absolut/path/directory' or \n java -jar als-stats.jar '/absolut/path/file.als'");
+    }
+}
