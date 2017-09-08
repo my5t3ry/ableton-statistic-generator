@@ -98,6 +98,7 @@ public class App {
                 " Usage:\n" +
                 " java -jar als-stats.jar '/absolut/path/directory' or \n" +
                 " java -jar als-stats.jar '/absolut/path/directory;/absolut/path2/directory' or \n" +
+                " java -jar als-stats.jar '/absolut/path/directory;/absolut/path/file.als' or \n" +
                 " java -jar als-stats.jar '/absolut/path/file.als'");
     }
 }
