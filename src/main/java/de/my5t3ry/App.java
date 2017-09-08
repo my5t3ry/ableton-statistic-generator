@@ -7,8 +7,7 @@ import de.my5t3ry.als_parser.domain.AbletonProject.device.Device;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -48,13 +47,13 @@ public class App {
                 .collect(Collectors.toList()), "External Effects");
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
-                .collect(Collectors.toList()),"External Effects");
+                .collect(Collectors.toList()), "External Effects");
     }
 
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
         int totalTrackCount;
         totalTrackCount = abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalTracks()));
-        System.out.println("Average tracks per project:'" + new BigDecimal(totalTrackCount).divide(new BigDecimal(abletonProjects.size()),4, RoundingMode.HALF_DOWN) + "'");
+        System.out.println("Average tracks per project:'" + new BigDecimal(totalTrackCount).divide(new BigDecimal(abletonProjects.size()), 4, RoundingMode.HALF_DOWN) + "'");
     }
 
     private static void printDeviceStats(final List<Device> devices, final String caption) {
@@ -67,9 +66,9 @@ public class App {
                 result.put(device, device.getCount());
             }
         });
-        result.entrySet().forEach(curEntry -> {
-            System.out.println(curEntry.getKey().getName() + ": " + curEntry.getValue());
-        });
+        result.entrySet().stream().sorted(Collections.reverseOrder(Comparator.comparing(Map.Entry::getValue)))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (device, count) -> device, LinkedHashMap::new)).forEach((device, count) -> System.out.println(device.getName() + ": " + count));
     }
 
     private static void printUsage() {
