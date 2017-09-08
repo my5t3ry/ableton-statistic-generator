@@ -9,8 +9,11 @@ mvn clean compile assembly:single
 ```
 ##usage:
 ```
- java -jar target/als-stats.jar '/absolut/path/directory' or 
- java -jar target/als-stats.jar '/absolut/path/file.als'
+cd target
+java -jar als-stats.jar '/absolut/path/directory' or 
+java -jar als-stats.jar '/absolut/path/directory;/absolut/path2/directory' or 
+java -jar als-stats.jar '/absolut/path/directory;/absolut/path/file.als' or 
+java -jar als-stats.jar '/absolut/path/file.als'
 ```
 
 
