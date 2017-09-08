@@ -48,10 +48,10 @@ public class App {
         printAverageTrackCount(abletonProjects);
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
-                .collect(Collectors.toList()), "Internal Effects:\n\n");
+                .collect(Collectors.toList()), "\n\nInternal Effects:\n");
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
-                .collect(Collectors.toList()), "External Effects:\n\n");
+                .collect(Collectors.toList()), "\n\nExternal Effects:\n");
     }
 
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
