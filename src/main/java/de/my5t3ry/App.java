@@ -2,6 +2,7 @@ package de.my5t3ry;
 
 import de.my5t3ry.als_parser.AbletonFileParser;
 import de.my5t3ry.als_parser.domain.AbletonProject.AbletonProject;
+import de.my5t3ry.als_parser.domain.AbletonProject.DeprecatedAbletonProject;
 import de.my5t3ry.als_parser.domain.AbletonProject.device.Device;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class App {
             printUsage();
         } else {
             final String pathArg = args[0];
-            if(pathArg.contains(";")){
+            if (pathArg.contains(";")) {
                 buildStats(pathArg.split(";"));
             }
         }
@@ -43,7 +44,7 @@ public class App {
     private static List<AbletonProject> collectAbletonProjects(final List<File> files) {
         printBusyMsg();
         files.forEach(file -> {
-            if(file.isDirectory()){
+            if (file.isDirectory()) {
                 result.addAll(fileParser.parseDirectory(file));
             } else {
                 result.add(fileParser.parse(file));
@@ -58,6 +59,7 @@ public class App {
 
     private static void printStats(final List<AbletonProject> abletonProjects) {
         System.out.println("Projects: '".concat(String.valueOf(abletonProjects.size())).concat("'"));
+        printDeprecatedCount(abletonProjects);
         printAverageTrackCount(abletonProjects);
         printTotalDeviceCount(abletonProjects);
         printDeviceStats(abletonProjects.stream()
@@ -66,6 +68,12 @@ public class App {
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nExternal Effects:\n");
+    }
+
+    private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
+        System.out.println("Ignored Projects (deprecated version < Ableton 8): '".concat(String.valueOf(abletonProjects.stream()
+                .filter(p -> p instanceof DeprecatedAbletonProject)
+                .collect(Collectors.toList()).size()).concat("'")));
     }
 
     private static void printTotalDeviceCount(final List<AbletonProject> abletonProjects) {
