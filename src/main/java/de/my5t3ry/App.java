@@ -27,6 +27,8 @@ public class App {
             final String pathArg = args[0];
             if (pathArg.contains(";")) {
                 buildStats(pathArg.split(";"));
+            } else {
+                buildStats(new String[]{args[0]});
             }
         }
     }
@@ -61,6 +63,7 @@ public class App {
     private static void printStats() {
         printProcessedCount(projects);
         printAverageTrackCount(projects);
+        printOldestTrackDate(projects);
         printTotalDeviceCount(projects);
         printDeviceStats(projects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
@@ -69,6 +72,12 @@ public class App {
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nExternal Effects:\n");
         printDeprecatedCount(projects);
+
+    }
+
+    private static void printOldestTrackDate(final List<AbletonProject> projects) {
+        projects.sort(Comparator.comparing(AbletonProject::getCreationFileTime));
+        System.out.println("Oldest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
 
     }
 
