@@ -56,7 +56,7 @@ public class App {
     }
 
     private static void printTotalDeviceCount(final List<AbletonProject> abletonProjects) {
-       System.out.println("\nAverage tracks per project:'".concat(String.valueOf(abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalDeviceCount())))));
+       System.out.println("Total devices used:'".concat(String.valueOf(abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalDeviceCount())))));
     }
 
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
@@ -66,8 +66,8 @@ public class App {
     }
 
     private static void printDeviceStats(final List<Device> devices, final String caption) {
-        System.out.println(caption);
         final HashMap<Device, Integer> result = new HashMap<>();
+        System.out.println(caption);
         devices.forEach(device -> {
             if (result.containsKey(device)) {
                 result.put(device, result.get(device) + device.getCount());
