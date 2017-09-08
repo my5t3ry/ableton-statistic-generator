@@ -72,17 +72,15 @@ public class App {
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nExternal Effects:\n");
         printDeprecatedCount(projects);
-
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
-        projects.sort(Comparator.comparing(AbletonProject::getCreationFileTime));
+        projects.sort(Comparator.comparing(AbletonProject::getCreationFileTime).reversed());
         System.out.println("Oldest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
-
     }
 
     private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
-        System.out.println("\nIgnored projects (deprecated version < Ableton 8): '".concat(String.valueOf(getIgnoredProjectFileCount(abletonProjects)).concat("'")));
+        System.out.println("\n\nIgnored projects (deprecated version < Ableton 8): '".concat(String.valueOf(getIgnoredProjectFileCount(abletonProjects)).concat("'")));
     }
 
     private static void printProcessedCount(final List<AbletonProject> abletonProjects) {
