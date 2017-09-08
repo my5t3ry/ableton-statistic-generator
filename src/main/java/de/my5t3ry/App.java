@@ -12,12 +12,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Hello world!
+ * created by: sascha.bast
+ * since: 08.09.17
  */
 public class App {
 
     private static final AbletonFileParser fileParser = new AbletonFileParser();
-    private static final List<AbletonProject> result = new ArrayList<>();
+    private static final List<AbletonProject> projects = new ArrayList<>();
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -32,7 +33,8 @@ public class App {
 
     private static void buildStats(final String[] filesPaths) {
         final List<File> files = buildFiles(filesPaths);
-        printStats(collectAbletonProjects(files));
+        collectAbletonProjects(files);
+        printStats();
     }
 
     private static List<File> buildFiles(final String[] filesPaths) {
@@ -41,31 +43,30 @@ public class App {
         return result;
     }
 
-    private static List<AbletonProject> collectAbletonProjects(final List<File> files) {
+    private static void collectAbletonProjects(final List<File> files) {
         printBusyMsg();
         files.forEach(file -> {
             if (file.isDirectory()) {
-                result.addAll(fileParser.parseDirectory(file));
+                projects.addAll(fileParser.parseDirectory(file));
             } else {
-                result.add(fileParser.parse(file));
+                projects.add(fileParser.parse(file));
             }
         });
-        return result;
     }
 
     private static void printBusyMsg() {
         System.out.println("processing projects ... \n");
     }
 
-    private static void printStats(final List<AbletonProject> abletonProjects) {
-        printDeprecatedCount(abletonProjects);
-        printProcessedCount(abletonProjects);
-        printAverageTrackCount(abletonProjects);
-        printTotalDeviceCount(abletonProjects);
-        printDeviceStats(abletonProjects.stream()
+    private static void printStats() {
+        printDeprecatedCount(projects);
+        printProcessedCount(projects);
+        printAverageTrackCount(projects);
+        printTotalDeviceCount(projects);
+        printDeviceStats(projects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nInternal Effects:\n");
-        printDeviceStats(abletonProjects.stream()
+        printDeviceStats(projects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nExternal Effects:\n");
     }
