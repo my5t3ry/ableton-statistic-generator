@@ -42,9 +42,9 @@ public class App {
     }
 
     private static void printDirectoryStats(final File file) {
-        System.out.println("parsing files, this can take a while ... \n");
+        System.out.println("parsing files, this can take a while ...");
         final List<AbletonProject> abletonProjects = fileParser.parseDirectory(file);
-        System.out.println("found als files:'" + abletonProjects.size() + "'");
+        System.out.println("processed Ableton Projects:'".concat(String.valueOf(abletonProjects.size())).concat("'"));
         printAverageTrackCount(abletonProjects);
         printTotalDeviceCount(abletonProjects);
         printDeviceStats(abletonProjects.stream()
