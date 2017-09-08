@@ -18,36 +18,47 @@ public class App {
     private static final AbletonFileParser fileParser = new AbletonFileParser();
 
     public static void main(String[] args) {
-        if (args.length < 1 || args.length > 1) {
+        if (args.length < 1) {
             printUsage();
         } else {
-            buildStats(new File(args[0]));
+            final String pathArg = args[0];
+            if(pathArg.contains(";")){
+                buildStats(pathArg.split(";"));
+            }
         }
 
     }
 
-    private static void buildStats(final File file) {
-        if (file.isDirectory()) {
-            printDirectoryStats(file);
-        } else {
-            printFileStats(file);
-        }
+    private static void buildStats(final String[] filesPaths) {
+        final List<File> files = buildFiles(filesPaths);
+        printStats(collectAbletonProjects(files));;
+
     }
 
-    private static void printFileStats(final File file) {
+    private static List<File> buildFiles(final String[] filesPaths) {
+        final List<File> result = new ArrayList<>();
+        Arrays.asList(filesPaths).forEach(filePath -> result.add(new File(filePath)));
+        return result;
+    }
+
+    private static List<AbletonProject> collectAbletonProjects(final List<File> files) {
         printBusyMsg();
-        final AbletonProject abletonProject = fileParser.parse(file);
-        printDeviceStats(abletonProject.getInternalDevices(), "Internal Effects:");
-        printDeviceStats(abletonProject.getExternalDevices(), "External Effects:");
+        final List<AbletonProject> result = new ArrayList<>();
+        files.forEach(file -> {
+            if(file.isDirectory()){
+                result.addAll(fileParser.parseDirectory(file));
+            } else {
+                result.add(fileParser.parse(file));
+            }
+        });
+        return result;
     }
 
     private static void printBusyMsg() {
         System.out.println("parsing files ... \n");
     }
 
-    private static void printDirectoryStats(final File file) {
-        printBusyMsg();
-        final List<AbletonProject> abletonProjects = fileParser.parseDirectory(file);
+    private static void printStats(final List<AbletonProject> abletonProjects) {
         System.out.println("processed Ableton projects:'".concat(String.valueOf(abletonProjects.size())).concat("'"));
         printAverageTrackCount(abletonProjects);
         printTotalDeviceCount(abletonProjects);
