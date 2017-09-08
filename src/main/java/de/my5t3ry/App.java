@@ -46,12 +46,17 @@ public class App {
         final List<AbletonProject> abletonProjects = fileParser.parseDirectory(file);
         System.out.println("found als files:'" + abletonProjects.size() + "'");
         printAverageTrackCount(abletonProjects);
+        printTotalDeviceCount(abletonProjects);
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nInternal Effects:\n");
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nExternal Effects:\n");
+    }
+
+    private static void printTotalDeviceCount(final List<AbletonProject> abletonProjects) {
+       System.out.println("\nAverage tracks per project:'".concat(String.valueOf(abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalDeviceCount())))));
     }
 
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
@@ -72,7 +77,7 @@ public class App {
         });
         result.entrySet().stream().sorted(Collections.reverseOrder(Comparator.comparing(Map.Entry::getValue)))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (device, count) -> device, LinkedHashMap::new)).forEach((device, count) -> System.out.println(device.getName() + ": " + count));
+                        (device, count) -> device, LinkedHashMap::new)).forEach((device, count) -> System.out.print(device.getName().concat(": ").concat(String.valueOf(count)).concat("; ")));
     }
 
     private static void printUsage() {
