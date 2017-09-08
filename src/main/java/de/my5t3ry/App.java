@@ -37,8 +37,8 @@ public class App {
     private static void printFileStats(final File file) {
         System.out.println("parsing files, this can take a while ... \n");
         final AbletonProject abletonProject = fileParser.parse(file);
-        printDeviceStats(abletonProject.getExternalDevices(), "External Effects");
-        printDeviceStats(abletonProject.getInternalDevices(), "Internal Effects");
+        printDeviceStats(abletonProject.getInternalDevices(), "Internal Effects:");
+        printDeviceStats(abletonProject.getExternalDevices(), "External Effects:");
     }
 
     private static void printDirectoryStats(final File file) {
@@ -48,10 +48,10 @@ public class App {
         printAverageTrackCount(abletonProjects);
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
-                .collect(Collectors.toList()), "Internal Effects\n\n");
+                .collect(Collectors.toList()), "Internal Effects:\n\n");
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
-                .collect(Collectors.toList()), "External Effects\n\n");
+                .collect(Collectors.toList()), "External Effects:\n\n");
     }
 
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
@@ -61,7 +61,7 @@ public class App {
     }
 
     private static void printDeviceStats(final List<Device> devices, final String caption) {
-        System.out.println(caption + ":");
+        System.out.println(caption);
         final HashMap<Device, Integer> result = new HashMap<>();
         devices.forEach(device -> {
             if (result.containsKey(device)) {
