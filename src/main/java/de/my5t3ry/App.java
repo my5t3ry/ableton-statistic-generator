@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class App {
 
     private static final AbletonFileParser fileParser = new AbletonFileParser();
+    private static final List<AbletonProject> result = new ArrayList<>();
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -26,12 +27,11 @@ public class App {
                 buildStats(pathArg.split(";"));
             }
         }
-
     }
 
     private static void buildStats(final String[] filesPaths) {
         final List<File> files = buildFiles(filesPaths);
-        printStats(collectAbletonProjects(files));;
+        printStats(collectAbletonProjects(files));
     }
 
     private static List<File> buildFiles(final String[] filesPaths) {
@@ -42,7 +42,6 @@ public class App {
 
     private static List<AbletonProject> collectAbletonProjects(final List<File> files) {
         printBusyMsg();
-        final List<AbletonProject> result = new ArrayList<>();
         files.forEach(file -> {
             if(file.isDirectory()){
                 result.addAll(fileParser.parseDirectory(file));
@@ -54,11 +53,11 @@ public class App {
     }
 
     private static void printBusyMsg() {
-        System.out.println("parsing files ... \n");
+        System.out.println("processing projects ... \n");
     }
 
     private static void printStats(final List<AbletonProject> abletonProjects) {
-        System.out.println("processed Ableton projects:'".concat(String.valueOf(abletonProjects.size())).concat("'"));
+        System.out.println("projects: '".concat(String.valueOf(abletonProjects.size())).concat("'"));
         printAverageTrackCount(abletonProjects);
         printTotalDeviceCount(abletonProjects);
         printDeviceStats(abletonProjects.stream()
@@ -76,7 +75,7 @@ public class App {
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
         int totalTrackCount;
         totalTrackCount = abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalTracks()));
-        System.out.println("\nAverage tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(abletonProjects.size()), 4, RoundingMode.HALF_DOWN) + "'");
+        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(abletonProjects.size()), 4, RoundingMode.HALF_DOWN) + "'");
     }
 
     private static void printDeviceStats(final List<Device> devices, final String caption) {
