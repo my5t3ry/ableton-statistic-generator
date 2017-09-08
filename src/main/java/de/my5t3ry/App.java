@@ -64,6 +64,7 @@ public class App {
         printProcessedCount(projects);
         printAverageTrackCount(projects);
         printOldestTrackDate(projects);
+        printLatestTrackDate(projects);
         printTotalDeviceCount(projects);
         printDeviceStats(projects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
@@ -75,8 +76,13 @@ public class App {
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
-        projects.sort(Comparator.comparing(AbletonProject::getCreationFileTime).reversed());
+        projects.sort(Comparator.comparing(AbletonProject::getCreationFileTime));
         System.out.println("Oldest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
+    }
+
+    private static void printLatestTrackDate(final List<AbletonProject> projects) {
+        projects.sort(Comparator.comparing(AbletonProject::getCreationFileTime).reversed());
+        System.out.println("Latest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
     }
 
     private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
