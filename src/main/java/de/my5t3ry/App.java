@@ -35,19 +35,23 @@ public class App {
     }
 
     private static void printFileStats(final File file) {
+        System.out.println("parsing files, this can take a while ... \n");
+        final AbletonProject abletonProject = fileParser.parse(file);
+        printDeviceStats(abletonProject.getExternalDevices(), "External Effects");
+        printDeviceStats(abletonProject.getInternalDevices(), "Internal Effects");
     }
 
     private static void printDirectoryStats(final File file) {
         System.out.println("parsing files, this can take a while ... \n");
         final List<AbletonProject> abletonProjects = fileParser.parseDirectory(file);
-        System.out.println("found files:'" + abletonProjects.size() + "'");
+        System.out.println("found als files:'" + abletonProjects.size() + "'");
         printAverageTrackCount(abletonProjects);
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
-                .collect(Collectors.toList()), "External Effects");
+                .collect(Collectors.toList()), "Internal Effects\n\n");
         printDeviceStats(abletonProjects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
-                .collect(Collectors.toList()), "External Effects");
+                .collect(Collectors.toList()), "External Effects\n\n");
     }
 
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
