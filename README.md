@@ -1,5 +1,6 @@
 # ableton-statistic-generator
 simple java app to generate statistics of your Ableton projects
+works with als files created with Ableton version >= 8 
 
 
 ## pre-build:
