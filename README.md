@@ -7,7 +7,7 @@ Add topics
 ```
 mvn clean compile assembly:single 
 ```
-##usage:
+## usage:
 ```
 cd target
 java -jar als-stats.jar '/absolut/path/directory' or 
