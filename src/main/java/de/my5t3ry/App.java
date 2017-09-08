@@ -35,7 +35,7 @@ public class App {
     }
 
     private static void printFileStats(final File file) {
-        System.out.println("parsing files, this can take a while ... \n");
+        System.out.println("parsing projects ... \n");
         final AbletonProject abletonProject = fileParser.parse(file);
         printDeviceStats(abletonProject.getInternalDevices(), "Internal Effects:");
         printDeviceStats(abletonProject.getExternalDevices(), "External Effects:");
