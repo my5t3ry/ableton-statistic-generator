@@ -1,6 +1,5 @@
 # ableton-statistic-generator
-simple java app to generate statistics of your ableton projects Edit
-Add topics
+simple java app to generate statistics of your Ableton projects
 
 
 ## build:
