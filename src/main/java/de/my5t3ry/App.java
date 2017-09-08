@@ -58,8 +58,8 @@ public class App {
     }
 
     private static void printStats(final List<AbletonProject> abletonProjects) {
-        System.out.println("Projects: '".concat(String.valueOf(abletonProjects.size())).concat("'"));
         printDeprecatedCount(abletonProjects);
+        printProcessedCount(abletonProjects);
         printAverageTrackCount(abletonProjects);
         printTotalDeviceCount(abletonProjects);
         printDeviceStats(abletonProjects.stream()
@@ -71,9 +71,23 @@ public class App {
     }
 
     private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
-        System.out.println("Ignored Projects (deprecated version < Ableton 8): '".concat(String.valueOf(abletonProjects.stream()
+        System.out.println("Ignored projects (deprecated version < Ableton 8): '".concat(String.valueOf(getIgnoredProjectFileCount(abletonProjects)).concat("'")));
+    }
+
+    private static void printProcessedCount(final List<AbletonProject> abletonProjects) {
+        System.out.println("Processed projects: '".concat(String.valueOf(getProcessedProjectFilesCount(abletonProjects)).concat("'")));
+    }
+
+    private static int getProcessedProjectFilesCount(final List<AbletonProject> abletonProjects) {
+        return abletonProjects.stream()
+                .filter(p -> p instanceof DeprecatedAbletonProject == false)
+                .collect(Collectors.toList()).size();
+    }
+
+    private static int getIgnoredProjectFileCount(final List<AbletonProject> abletonProjects) {
+        return abletonProjects.stream()
                 .filter(p -> p instanceof DeprecatedAbletonProject)
-                .collect(Collectors.toList()).size()).concat("'")));
+                .collect(Collectors.toList()).size();
     }
 
     private static void printTotalDeviceCount(final List<AbletonProject> abletonProjects) {
@@ -83,7 +97,7 @@ public class App {
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
         int totalTrackCount;
         totalTrackCount = abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalTracks()));
-        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(abletonProjects.size()), 0, RoundingMode.HALF_DOWN) + "'");
+        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(getProcessedProjectFilesCount(abletonProjects)), 0, RoundingMode.HALF_DOWN) + "'");
     }
 
     private static void printDeviceStats(final List<Device> devices, final String caption) {
