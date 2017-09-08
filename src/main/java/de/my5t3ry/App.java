@@ -32,7 +32,6 @@ public class App {
     private static void buildStats(final String[] filesPaths) {
         final List<File> files = buildFiles(filesPaths);
         printStats(collectAbletonProjects(files));;
-
     }
 
     private static List<File> buildFiles(final String[] filesPaths) {
