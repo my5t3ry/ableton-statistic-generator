@@ -76,12 +76,12 @@ public class App {
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
-        projects.sort(Comparator.comparing(AbletonProject::getCreationFileTime));
+        projects.stream().filter(abletonProject -> abletonProject instanceof DeprecatedAbletonProject).collect(Collectors.toList()).sort(Comparator.comparing(AbletonProject::getCreationFileTime));
         System.out.println("Oldest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
     }
 
     private static void printLatestTrackDate(final List<AbletonProject> projects) {
-        projects.sort(Comparator.comparing(AbletonProject::getCreationFileTime).reversed());
+        projects.stream().filter(abletonProject -> abletonProject instanceof DeprecatedAbletonProject).collect(Collectors.toList()).sort(Comparator.comparing(AbletonProject::getCreationFileTime).reversed());
         System.out.println("Latest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
     }
 
