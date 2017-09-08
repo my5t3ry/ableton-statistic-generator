@@ -94,6 +94,10 @@ public class App {
     }
 
     private static void printUsage() {
-        System.out.println("invalid argument count. \n Usage:\n java -jar als-stats.jar '/absolut/path/directory' or \n java -jar als-stats.jar '/absolut/path/file.als'");
+        System.out.println("invalid argument count. \n" +
+                " Usage:\n" +
+                " java -jar als-stats.jar '/absolut/path/directory' or \n" +
+                " java -jar als-stats.jar '/absolut/path/directory;/absolut/path2/directory' or \n" +
+                " java -jar als-stats.jar '/absolut/path/file.als'");
     }
 }
