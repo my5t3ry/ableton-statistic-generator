@@ -46,9 +46,7 @@ public class App {
     }
 
     private static List<File> buildFiles(final String[] filesPaths) {
-        final List<File> result = new ArrayList<>();
-        Arrays.asList(filesPaths).forEach(filePath -> result.add(new File(filePath)));
-        return result;
+        return Arrays.asList(filesPaths).stream().map(path -> new File(path)).collect(Collectors.toList());
     }
 
     private static void collectAbletonProjects(final List<File> files) {
@@ -88,9 +86,11 @@ public class App {
     private static void printTotalMidiTrackCount(final List<AbletonProject> projects) {
         System.out.println("Total midi tracks: '".concat(String.valueOf((Integer) projects.stream().mapToInt(p -> p.getMidiTracksCount()).sum()).concat("'")));
     }
+
     private static void printTotalGroupsTrackCount(final List<AbletonProject> projects) {
         System.out.println("Total group tracks: '".concat(String.valueOf((Integer) projects.stream().mapToInt(p -> p.getGroupTracksCount()).sum()).concat("'")));
     }
+
     private static void printTotalAudioTrackCount(final List<AbletonProject> projects) {
         System.out.println("Total audio tracks: '".concat(String.valueOf((Integer) projects.stream().mapToInt(p -> p.getAudioTracksCount()).sum()).concat("'")));
     }
