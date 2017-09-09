@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class App {
 
     private static final AbletonFileParser fileParser = new AbletonFileParser();
-    private static final List<AbletonProject> projects = new ArrayList<>();
+    private static List<AbletonProject> projects = new ArrayList<>();
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -36,13 +36,13 @@ public class App {
     private static void buildStats(final String[] filesPaths) {
         final List<File> files = buildFiles(filesPaths);
         collectAbletonProjects(files);
-        sortProjects();
+        sortAndFilterProjects();
         printStats();
     }
 
-    private static void sortProjects() {
-        projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList())
-                .sort(Comparator.comparing(AbletonProject::getCreationFileTime));
+    private static void sortAndFilterProjects() {
+        projects = projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).stream()
+                .sorted(Comparator.comparing(AbletonProject::getCreationFileTime)).collect(Collectors.toList());
     }
 
     private static List<File> buildFiles(final String[] filesPaths) {
