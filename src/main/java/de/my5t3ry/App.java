@@ -135,7 +135,7 @@ public class App {
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
         int totalTrackCount;
         totalTrackCount = abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalTracks()));
-        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(getProcessedProjectFilesCount(abletonProjects)), 0, RoundingMode.HALF_UP) + "'");
+        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(getProcessedProjectFilesCount(abletonProjects)), 0, RoundingMode.UP) + "'");
     }
 
     private static void printDeviceStats(final List<Device> devices, final String caption) {
