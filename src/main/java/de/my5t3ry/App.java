@@ -36,7 +36,12 @@ public class App {
     private static void buildStats(final String[] filesPaths) {
         final List<File> files = buildFiles(filesPaths);
         collectAbletonProjects(files);
+        sortProjects();
         printStats();
+    }
+
+    private static void sortProjects() {
+        projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).sort(Comparator.comparing(AbletonProject::getCreationFileTime));
     }
 
     private static List<File> buildFiles(final String[] filesPaths) {
@@ -76,17 +81,15 @@ public class App {
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
-        projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).sort(Comparator.comparing(AbletonProject::getCreationFileTime));
-        System.out.println("Oldest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
+        System.out.println("Oldest project: '".concat(projects.get(projects.size() - 1).getCreationFileTimeAsString()));
     }
 
     private static void printLatestTrackDate(final List<AbletonProject> projects) {
-        projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).sort(Comparator.comparing(AbletonProject::getCreationFileTime).reversed());
         System.out.println("Latest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
     }
 
     private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
-        System.out.println("\n\nIgnored projects (deprecated version < Ableton 8): '".concat(String.valueOf(getIgnoredProjectFileCount(abletonProjects)).concat("'")));
+        System.out.println("\n\nIgnored projects (deprecated version < Ableton 8.0): '".concat(String.valueOf(getIgnoredProjectFileCount(abletonProjects)).concat("'")));
     }
 
     private static void printProcessedCount(final List<AbletonProject> abletonProjects) {
