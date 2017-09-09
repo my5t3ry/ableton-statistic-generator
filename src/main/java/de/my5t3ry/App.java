@@ -62,7 +62,7 @@ public class App {
     }
 
     private static void printBusyMsg() {
-        System.out.println("calculating ableton project statistics ... \n");
+        System.out.println("calculating Ableton project statistics ... \n");
     }
 
     private static void printStats() {
@@ -81,11 +81,11 @@ public class App {
         printDeprecatedCount(projects);
     }
 
-    private static void printTotalCount(final List<AbletonProject> projects) {
+    private static void printOldestTrackDate(final List<AbletonProject> projects) {
         System.out.println("Total projects: '".concat(String.valueOf(projects.size()).concat("'")));
     }
 
-    private static void printOldestTrackDate(final List<AbletonProject> projects) {
+    private static void printTotalCount(final List<AbletonProject> projects) {
         System.out.println("Oldest project: '".concat(projects.get(projects.size() - 1).getCreationFileTimeAsString()));
     }
 
