@@ -66,6 +66,7 @@ public class App {
     }
 
     private static void printStats() {
+        printTotalCount(projects);
         printProcessedCount(projects);
         printAverageTrackCount(projects);
         printOldestTrackDate(projects);
@@ -78,6 +79,10 @@ public class App {
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nExternal Effects:\n");
         printDeprecatedCount(projects);
+    }
+
+    private static void printTotalCount(final List<AbletonProject> projects) {
+        System.out.println("Total projects: '".concat(String.valueOf(projects.size()).concat("'")));
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
