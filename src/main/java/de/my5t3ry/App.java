@@ -19,6 +19,7 @@ public class App {
 
     private static final AbletonFileParser fileParser = new AbletonFileParser();
     private static List<AbletonProject> projects = new ArrayList<>();
+    private static List<AbletonProject> filteredProjects;
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -41,7 +42,7 @@ public class App {
     }
 
     private static void sortAndFilterProjects() {
-        projects = projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).stream()
+        filteredProjects = projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).stream()
                 .sorted(Comparator.comparing(AbletonProject::getCreationFileTime)).collect(Collectors.toList());
     }
 
@@ -66,21 +67,21 @@ public class App {
 
     private static void printStats() {
         printTotalCount(projects);
-        printProcessedCount(projects);
+        printProcessedCount(filteredProjects);
         printDeprecatedCount(projects);
-        printOldestTrackDate(projects);
-        printLatestTrackDate(projects);
-        printAverageTrackCount(projects);
-        printTotalMidiTrackCount(projects);
-        printTotalAudioTrackCount(projects);
-        printTotalGroupsTrackCount(projects);
-        printTotalDeviceCount(projects);
+        printOldestTrackDate(filteredProjects);
+        printLatestTrackDate(filteredProjects);
+        printAverageTrackCount(filteredProjects);
+        printTotalMidiTrackCount(filteredProjects);
+        printTotalAudioTrackCount(filteredProjects);
+        printTotalGroupsTrackCount(filteredProjects);
+        printTotalDeviceCount(filteredProjects);
         printDeviceStats(projects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
-                .collect(Collectors.toList()), "\n\nInternal Effects:\n");
+                .collect(Collectors.toList()), "\n\nInternal devices:\n");
         printDeviceStats(projects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
-                .collect(Collectors.toList()), "\n\nExternal Effects:\n");
+                .collect(Collectors.toList()), "\n\nExternal devices:\n");
     }
 
     private static void printTotalMidiTrackCount(final List<AbletonProject> projects) {
@@ -113,14 +114,10 @@ public class App {
     }
 
     private static void printProcessedCount(final List<AbletonProject> abletonProjects) {
-        System.out.println("Processed projects: '".concat(String.valueOf(getProcessedProjectFilesCount(abletonProjects)).concat("'")));
+        System.out.println("Processed projects: '".concat(String.valueOf(abletonProjects.size()).concat("'")));
     }
 
-    private static int getProcessedProjectFilesCount(final List<AbletonProject> abletonProjects) {
-        return abletonProjects.stream()
-                .filter(p -> !(p instanceof DeprecatedAbletonProject))
-                .collect(Collectors.toList()).size();
-    }
+
 
     private static int getIgnoredProjectFileCount(final List<AbletonProject> abletonProjects) {
         return abletonProjects.stream()
@@ -135,7 +132,7 @@ public class App {
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
         int totalTrackCount;
         totalTrackCount = abletonProjects.stream().mapToInt(p -> p.getTotalTracks()).sum();
-        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(getProcessedProjectFilesCount(abletonProjects)), 0, RoundingMode.UP) + "'");
+        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(abletonProjects.size()), 0, RoundingMode.UP) + "'");
     }
 
     private static void printDeviceStats(final List<Device> devices, final String caption) {
