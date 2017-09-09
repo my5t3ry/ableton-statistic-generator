@@ -47,7 +47,7 @@ public class App {
     }
 
     private static List<File> buildFiles(final String[] filesPaths) {
-        return Arrays.asList(filesPaths).stream().map(path -> new File(path)).collect(Collectors.toList());
+        return Arrays.stream(filesPaths).map(path -> new File(path)).collect(Collectors.toList());
     }
 
     private static void collectAbletonProjects(final List<File> files) {
