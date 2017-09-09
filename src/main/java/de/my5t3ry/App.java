@@ -41,7 +41,8 @@ public class App {
     }
 
     private static void sortProjects() {
-        projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).sort(Comparator.comparing(AbletonProject::getCreationFileTime));
+        projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList())
+                .sort(Comparator.comparing(AbletonProject::getCreationFileTime));
     }
 
     private static List<File> buildFiles(final String[] filesPaths) {
@@ -99,11 +100,12 @@ public class App {
     }
 
     private static void printLatestTrackDate(final List<AbletonProject> projects) {
-        System.out.println("Latest project: '".concat(projects.get(projects.size() - 1).getCreationFileTimeAsString()));
+        final List<AbletonProject> projectsWithCreationDate = projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList());
+        System.out.println("Latest project: '".concat(projectsWithCreationDate.get(projectsWithCreationDate.size() - 1).getCreationFileTimeAsString()));
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
-        System.out.println("Oldest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
+        System.out.println("Oldest project: '".concat(projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).get(0).getCreationFileTimeAsString()));
     }
 
     private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
