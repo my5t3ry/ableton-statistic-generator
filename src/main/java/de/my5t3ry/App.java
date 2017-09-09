@@ -99,11 +99,11 @@ public class App {
     }
 
     private static void printLatestTrackDate(final List<AbletonProject> projects) {
-        System.out.println("Oldest project: '".concat(projects.get(projects.size() - 1).getCreationFileTimeAsString()));
+        System.out.println("Latest project: '".concat(projects.get(projects.size() - 1).getCreationFileTimeAsString()));
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
-        System.out.println("Latest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
+        System.out.println("Oldest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
     }
 
     private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
@@ -133,7 +133,7 @@ public class App {
     private static void printAverageTrackCount(final List<AbletonProject> abletonProjects) {
         int totalTrackCount;
         totalTrackCount = abletonProjects.stream().collect(Collectors.summingInt(p -> p.getTotalTracks()));
-        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(getProcessedProjectFilesCount(abletonProjects)), 0, RoundingMode.HALF_DOWN) + "'");
+        System.out.println("Average tracks per project: '" + new BigDecimal(totalTrackCount).divide(new BigDecimal(getProcessedProjectFilesCount(abletonProjects)), 0, RoundingMode.HALF_UP) + "'");
     }
 
     private static void printDeviceStats(final List<Device> devices, final String caption) {
