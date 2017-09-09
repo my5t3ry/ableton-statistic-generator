@@ -102,11 +102,11 @@ public class App {
 
     private static void printLatestTrackDate(final List<AbletonProject> projects) {
         final List<AbletonProject> projectsWithCreationDate = projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList());
-        System.out.println("Latest project: '".concat(projectsWithCreationDate.get(projectsWithCreationDate.size() - 1).getCreationFileTimeAsString()));
+        System.out.println("Latest project: '".concat(projectsWithCreationDate.get(projectsWithCreationDate.size() - 1).getCreationFileTimeAsString().concat("'")));
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
-        System.out.println("Oldest project: '".concat(projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).get(0).getCreationFileTimeAsString()));
+        System.out.println("Oldest project: '".concat(projects.stream().filter(abletonProject -> abletonProject.getCreationFileTime() != null).collect(Collectors.toList()).get(0).getCreationFileTimeAsString().concat("'")));
     }
 
     private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
