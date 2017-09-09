@@ -68,6 +68,7 @@ public class App {
     private static void printStats() {
         printTotalCount(projects);
         printProcessedCount(projects);
+        printDeprecatedCount(projects);
         printAverageTrackCount(projects);
         printOldestTrackDate(projects);
         printLatestTrackDate(projects);
@@ -78,7 +79,6 @@ public class App {
         printDeviceStats(projects.stream()
                 .flatMap(curProject -> curProject.getExternalDevices().stream())
                 .collect(Collectors.toList()), "\n\nExternal Effects:\n");
-        printDeprecatedCount(projects);
     }
 
     private static void printOldestTrackDate(final List<AbletonProject> projects) {
@@ -94,7 +94,7 @@ public class App {
     }
 
     private static void printDeprecatedCount(final List<AbletonProject> abletonProjects) {
-        System.out.println("\n\nIgnored projects (deprecated version < Ableton 8.0): '".concat(String.valueOf(getIgnoredProjectFileCount(abletonProjects)).concat("'")));
+        System.out.println("Ignored projects (deprecated version < Ableton 8.0): '".concat(String.valueOf(getIgnoredProjectFileCount(abletonProjects)).concat("'")));
     }
 
     private static void printProcessedCount(final List<AbletonProject> abletonProjects) {
