@@ -147,7 +147,7 @@ public class App {
         });
         result.entrySet().stream().sorted(Collections.reverseOrder(Comparator.comparing(Map.Entry::getValue)))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (device, count) -> device, LinkedHashMap::new)).forEach((device, count) -> System.out.print(device.getName().concat(": ").concat(String.valueOf(count)).concat("; ")));
+                        (device, count) -> device, LinkedHashMap::new)).forEach((device, count) -> System.out.print(String.valueOf(count).concat(" ").concat(device.getName()).concat("; ")));
     }
 
     private static void printUsage() {
