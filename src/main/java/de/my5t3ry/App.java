@@ -117,8 +117,6 @@ public class App {
         System.out.println("Processed projects: '".concat(String.valueOf(abletonProjects.size()).concat("'")));
     }
 
-
-
     private static int getIgnoredProjectFileCount(final List<AbletonProject> abletonProjects) {
         return abletonProjects.stream()
                 .filter(p -> p instanceof DeprecatedAbletonProject)
