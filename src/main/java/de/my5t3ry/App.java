@@ -62,7 +62,7 @@ public class App {
     }
 
     private static void printBusyMsg() {
-        System.out.println("calculating Ableton project statistics ... \n");
+        System.out.println("parsing Ableton projects ... \n");
     }
 
     private static void printStats() {
