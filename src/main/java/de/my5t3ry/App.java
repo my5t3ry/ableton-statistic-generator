@@ -69,9 +69,12 @@ public class App {
         printTotalCount(projects);
         printProcessedCount(projects);
         printDeprecatedCount(projects);
-        printAverageTrackCount(projects);
         printOldestTrackDate(projects);
         printLatestTrackDate(projects);
+        printAverageTrackCount(projects);
+        printTotalMidiTrackCount(projects);
+        printTotalAudioTrackCount(projects);
+        printTotalGroupsTrackCount(projects);
         printTotalDeviceCount(projects);
         printDeviceStats(projects.stream()
                 .flatMap(curProject -> curProject.getInternalDevices().stream())
@@ -81,15 +84,25 @@ public class App {
                 .collect(Collectors.toList()), "\n\nExternal Effects:\n");
     }
 
-    private static void printOldestTrackDate(final List<AbletonProject> projects) {
-        System.out.println("Total projects: '".concat(String.valueOf(projects.size()).concat("'")));
+    private static void printTotalMidiTrackCount(final List<AbletonProject> projects) {
+        System.out.println("Total midi tracks: '".concat(String.valueOf(projects.stream().collect(Collectors.summingInt(p -> p.getMidiTracksCount()))).concat("'")));
+    }
+    private static void printTotalGroupsTrackCount(final List<AbletonProject> projects) {
+        System.out.println("Total group tracks: '".concat(String.valueOf(projects.stream().collect(Collectors.summingInt(p -> p.getGroupTracksCount()))).concat("'")));
+    }
+    private static void printTotalAudioTrackCount(final List<AbletonProject> projects) {
+        System.out.println("Total audio tracks: '".concat(String.valueOf(projects.stream().collect(Collectors.summingInt(p -> p.getAudioTracksCount()))).concat("'")));
     }
 
     private static void printTotalCount(final List<AbletonProject> projects) {
-        System.out.println("Oldest project: '".concat(projects.get(projects.size() - 1).getCreationFileTimeAsString()));
+        System.out.println("Total projects: '".concat(String.valueOf(projects.size()).concat("'")));
     }
 
     private static void printLatestTrackDate(final List<AbletonProject> projects) {
+        System.out.println("Oldest project: '".concat(projects.get(projects.size() - 1).getCreationFileTimeAsString()));
+    }
+
+    private static void printOldestTrackDate(final List<AbletonProject> projects) {
         System.out.println("Latest project: '".concat(projects.get(0).getCreationFileTimeAsString()));
     }
 
